@@ -95,7 +95,7 @@
             Meelespea.instance.notebook_id = notebook.id;
 
            var li = new_notebook.createHtmlElement();
-           document.querySelector('.list-of-notebooks').appendChild(li);
+           document.querySelector('.list-of-notebooks','.list-of-notebooksToday').appendChild(li);
 
          });
           this.notebook_id++;
@@ -130,8 +130,6 @@
          this.notebooks = JSON.parse(localStorage.notebooks);
          console.log("laadinsin localStorage'ist massiivi " + this.notebooks.length);
 
-
-
              //tekitan loendi htmli
              this.notebooks.forEach(function(notebook){
                if (notebook.reminder_date==newdate){
@@ -146,12 +144,7 @@
              });
 
               this.notebook_id++;
-
-
          }
-
-
-
 
        // esimene loogika oleks see, et kuulame hiireklikki nupul
        this.bindEvents();
@@ -160,7 +153,6 @@
 
      bindEvents: function(){
        document.querySelector('.add-new-notebook').addEventListener('click', this.addNewClick.bind(this));
-
 
      },
 
@@ -181,8 +173,7 @@
 
             //kustutame HTMList
             var clicked_li = event.target.parentNode;
-            if (window.location.href==("http://greeny.cs.tlu.ee/~kelllep/veebirakenduste-kasutajaliidesed/2.vk-kodutoo-I-ruhm/app.html#home-view")){
-              document.querySelector('.list-of-notebooksToday').removeChild(clicked_li);
+            document.querySelector('.list-of-notebooksToday', '.list-of-notebooks').removeChild(clicked_li);
 
             //kustutan massiiivist
             this.notebooks.forEach(function(notebook, i){
@@ -197,24 +188,6 @@
 
             //salvestan uuesti localStorage'isse
             localStorage.setItem('notebooks', JSON.stringify(this.notebooks));
-
-          } else{
-                document.querySelector('.list-of-notebooks').removeChild(clicked_li);
-                //kustutan massiiivist
-                this.notebooks.forEach(function(notebook, i){
-
-                     //sama id mis vajutasime
-                    if(notebook.id == event.target.dataset.id){
-
-                      //mis indeks ja mitu + lisaks saab asendada vajadusel
-                      Meelespea.instance.notebooks.splice(i, 1);
-                    }
-                  });
-
-                //salvestan uuesti localStorage'isse
-                localStorage.setItem('notebooks', JSON.stringify(this.notebooks));
-
-            }
 
           },
 
@@ -243,6 +216,7 @@
        var li = new_notebook.createHtmlElement();
        document.querySelector('.list-of-notebooks','.list-of-notebooksToday').appendChild(li);
 
+
      },
 
      changeNotebook: function(event){
@@ -257,30 +231,15 @@
 
         var clicked_li = event.target.parentNode;
 
-        if (window.location.href==("http://greeny.cs.tlu.ee/~kelllep/veebirakenduste-kasutajaliidesed/2.vk-kodutoo-I-ruhm/app.html#home-view")){
-
-          clicked_li.querySelector('.content').innerHTML = ch;
+        clicked_li.querySelector('.content').innerHTML = ch;
           this.notebooks.forEach(function(notebook, i){
-              if(notebook.id == event.target.dataset.id){
-                      notebook.reminder_content = ch
+            if(notebook.id == event.target.dataset.id){
+              notebook.reminder_content = ch;
               }
           });
 
         localStorage.setItem('notebooks', JSON.stringify(this.notebooks));
         location.reload();
-
-
-      }else{
-        clicked_li.querySelector('.content').innerHTML = ch;
-        this.notebooks.forEach(function(notebook, i){
-            if(notebook.id == event.target.dataset.id){
-                    notebook.reminder_content = ch
-            }
-        });
-
-      localStorage.setItem('notebooks', JSON.stringify(this.notebooks));
-      location.reload();
-      }
 
       },
 
